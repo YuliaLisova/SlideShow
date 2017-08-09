@@ -1,0 +1,217 @@
+<!doctype html>
+<html>
+    <head>
+    <meta charset="utf-8" />
+    <style type="text/css">
+    #base{
+        width:800px;
+        height:450px;
+        position: relative;
+        margin: 20px auto;
+      background-image: url(0.jpg);
+        background-size: 800px;
+    }
+    
+    .firstClass 
+    {
+       }
+    
+    .newClass
+    {
+        position: absolute;
+        width: 5px;
+        height: 100%;
+        top:0px;
+         background-image: url(0.jpg);
+        background-size: 800px;
+    }
+    
+    
+     .newClass1
+    {
+        position: absolute;
+        width: 50px;
+        height: 50px;
+        top:0px;
+        left:0px;
+        background-image: url(0.jpg);
+        background-size: 800px;
+    }
+    
+   
+    
+    
+    #thumb
+    {
+        width:800px;
+        height:100px;
+        margin: 0px auto;
+    }
+    #thumb div
+    {
+        width:150px;
+        height:80px;
+        display: inline-block;
+        background-size: 150px;
+        margin:0px 5px;
+    } 
+    </style>
+    <script type="text/javascript" src="script.js"></script>
+    
+    </head>  
+    <body>
+        <div id="base"></div>
+        <div id="thumb">
+      
+        <script>
+            var width = 5;
+            var width1 = 50;
+            var height1 = 50;
+            var imgCount = 4;
+            var curImg = 0;
+            var m;
+            var base = document.getElementById('base');
+            var delay;
+
+            createSquares();
+
+            function Myfunc()
+            { }
+
+            function createLines() {
+                for (var i = 0; i < base.offsetWidth / width; ++i) {
+                    var el = document.createElement('div');
+                    el.id = 'e' + i;
+                    el.style.backgroundPosition = -i * width + 'px';
+                    el.style.left = i * width + 'px';
+                    el.classList.add('firstClass');
+                    el.classList.add("newClass");
+                    base.appendChild(el);
+
+                }
+            }
+
+
+            function createSquares() {
+                var number = 0;
+                for (var i = 0; i < base.offsetHeight / height1; ++i) {
+                    for (var j = 0; j < base.offsetWidth / width1; j++) {
+                        var el = document.createElement('div');
+                        el.id = 'e' + number;
+                        number++;
+                        el.classList.add('firstClass');
+                        el.classList.add("newClass1");
+                        el.style.backgroundPosition = -j * height1 + 'px' + ' ' + -i * width1 + 'px';
+
+                        el.style.top = i * width1 + 'px';
+                        el.style.left = j * height1 + 'px';
+
+                        base.appendChild(el);
+                    }
+                    j = 0;
+
+                }
+                number = 0;
+
+            }
+
+
+
+            function funcStart() {
+
+                m = setInterval(change, 6000);
+            }
+
+            function Stop() {
+                clearInterval(m);
+            }
+
+            function change() {
+
+                {
+
+                    curImg++;
+
+                    if (curImg >= imgCount) curImg = 0;
+                   
+
+                    
+                    var divs = document.getElementsByClassName("firstClass");
+                    var length = divs.length;
+                    for (var i = 0; i < length; i++) {
+
+                        var id = 'e' + i;
+                        var toremove = document.getElementById(id);
+                        base.removeChild(toremove);
+                    }
+
+
+                    
+                    if (curImg % 2 == 0) { createLines(); delay = 10; }
+                    else { createSquares(); delay = 100; }
+
+                    var created = document.getElementsByClassName("firstClass");
+                    for (var x = 0; x < created.length; x++) {
+                        created[x].style.backgroundImage = 'url(' + curImg + '.jpg)';
+                        created[x].style.opacity = 0;
+
+                    }
+
+                    hideLines(created.length, base, curImg);
+                  
+                   
+                    
+                }
+            }
+
+
+
+            function newfunc(j) {
+
+               
+
+                clearInterval(m);
+                var divs = document.getElementsByClassName("firstClass");
+                for (var i = 0; i < divs.length; i++) {
+                    divs[i].style.backgroundImage = 'url(' + j + '.jpg)';
+
+                }
+
+               
+                base.style.backgroundImage = 'url(' + j + '.jpg)';
+                
+                curImg = j;
+                if (curImg >= imgCount) curImg = 0;
+            }
+
+
+            function hideLines(count) {
+                var num = 0;
+                var m = setInterval(function () {
+                    var el = document.getElementById('e' + num);
+                    fadeIn(el);
+                    ++num;
+                    if (num == count) {
+                        clearInterval(m);
+                        num = 0;
+                       
+                        base.style.backgroundImage = 'url(' + curImg + '.jpg)';
+
+                        
+                    }
+                }, 25);
+            }
+
+
+           
+            document.write(' <button style="height:20px; width:50px;"onclick=funcStart()>Start</button>');
+
+            document.write(' <button style="height:20px; width:50px;"onclick=Stop()>Stop</button>');
+
+            for (var i = 0; i < imgCount; ++i)
+                document.write('<div style="background-image:url(' + i + '.jpg)" onclick=newfunc(' + i + ')></div>');
+        
+        </script>
+        </div>
+    </body>
+</html>
